@@ -1,5 +1,5 @@
 // Two-Pass Assembler: Pass-2 Code
-// Name: Atharva M. Belekar
+// Name: Ghanashyam M Patil
 
 
 #include <bits/stdc++.h>
