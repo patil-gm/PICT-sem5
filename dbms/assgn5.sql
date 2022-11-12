@@ -23,9 +23,7 @@ INSERT INTO Result VALUES('Pranav', 75);
 
 \d //
 
-CREATE FUNCTION calculateGrade(
-	rollno INT
-)
+CREATE FUNCTION calculateGrade ( rollno INT )
 RETURNS VARCHAR(20)
 DETERMINISTIC
 BEGIN
