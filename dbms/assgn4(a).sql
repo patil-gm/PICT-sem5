@@ -17,7 +17,7 @@ delimiter //
 CREATE PROCEDURE calculate_fine (IN rollno INT, IN name VARCHAR(20))
 BEGIN
 	DECLARE fine INT;
-	DECLARE date_of_issue INT;
+	DECLARE date_of_issue DATE;
 	DECLARE days INT;
 
 	DECLARE EXIT HANDLER FOR SQLWARNING
