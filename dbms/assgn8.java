@@ -1,5 +1,3 @@
-package hello;
-
 //This code is for establishing connection with MySQL
 //database and retrieving data
 //from db Java Database connectivity
@@ -14,47 +12,32 @@ package hello;
 *7. close
 */
 
-import java.io.*;
+package mock1;
 import java.sql.*;
 import java.util.Scanner;
 
-class Hello {
-	public static void main(String arg[])
-	{
+public class JDBC {
+
+	public static void main(String[] args) throws Exception{
+		
 		Connection connection = null;
-		try {
+		
 			// below two lines are used for connectivity.
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			connection = DriverManager.getConnection(
-				"jdbc:mysql -u root -p",
-				"Ghanashyam", "user_password");
+            String url="jdbc:mysql://localhost:3306/student";
+            String uname="root";
+            String pass="gmp123";
+
+            connection = DriverManager.getConnection(url,uname,pass);
 
 
 			Statement statement;
 			statement = connection.createStatement();
+
 			ResultSet resultSet;
 			
 			Scanner sc = new Scanner(System.in);
-//			System.out.println("Enter the name of table you want to create");
-//			String tableName = sc.nextLine();
-//			String createTable1 = "create table "+tableName+" (rollno int, name varchar(20));";
-//			statement.executeUpdate(createTable1);
-			
-			
-//			resultSet = statement.executeQuery(createTable1);
-//			int code;
-//			String title;
-//			while (resultSet.next()) {
-//				code = resultSet.getInt("Bookid");
-//				title = resultSet.getString("Name").trim();
-//				System.out.println("Code : " + code
-//								+ " Title : " + title);
-//			}
-			
-			// create table -> tableName, noOfFields, fields and their datatypes
-			// read -> tableName
-			// update -> tablename, show table ask for id, values to change
-			// delete -> tableName, show table and ask for id, delete id;
+
 			while(true) {
 				System.out.println("\nMain Menu\n1. Create table\n2. Read table\n3. Update\n4. Delete\n5. Exit\n");
 				System.out.print("Enter the choice: ");
@@ -84,29 +67,39 @@ class Hello {
 					System.out.println("Enter the name of table to read: ");
 					String tableName = sc.next();
 					String readTableQuery = "SELECT * FROM " + tableName + ";";
+					
 					resultSet = statement.executeQuery(readTableQuery);
+					
 					ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
+					
 					int colCount = resultSetMetaData.getColumnCount();
 					for(int i=1; i<=colCount; i++) {
 						System.out.print(resultSetMetaData.getColumnName(i)+"\t"); 
 					}
+					System.out.println(" ");
 					while(resultSet.next()) {
 						System.out.print("\n");
 						for(int i=1; i<=colCount; i++) {
 							System.out.print(resultSet.getString(i)+"\t");
 						}
 					}
+					System.out.println(" ");
+					System.out.println(" ");
 					
 				} else if(choice==3) { // update
 					System.out.print("Enter the table you want to update: ");
 					String tableName = sc.next();
 					String readTableQuery = "SELECT * FROM " + tableName + ";";
+					
 					resultSet = statement.executeQuery(readTableQuery);
+					
 					ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
+					
 					int colCount = resultSetMetaData.getColumnCount();
 					for(int i=1; i<=colCount; i++) {
 						System.out.print(i + " " + resultSetMetaData.getColumnName(i)+"\t"); 
 					}
+					
 					System.out.println("Select the column you want to update: ");
 					int colToUpdate = sc.nextInt();
 					
@@ -123,6 +116,7 @@ class Hello {
 					System.out.println(updateTableQuery);
 					statement.executeUpdate(updateTableQuery);
 				} else if(choice==4) { // delete
+					System.out.println("this features is in progress we will get you soon .....! :)");
 					
 				} else if(choice==5) {
 					System.out.println("Exiting...");
@@ -131,12 +125,12 @@ class Hello {
 			}
 			
 			
-//			resultSet.close();
+
 			statement.close();
 			connection.close();
-		}
-		catch (Exception exception) {
-			System.out.println(exception);
-		}
-	} // function ends
+		
+		
+		
+	}
+
 }
