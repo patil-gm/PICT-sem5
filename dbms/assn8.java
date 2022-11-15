@@ -1,3 +1,5 @@
+package mock1;
+
 /*
 //This code is for establishing connection with MySQL
 //database and retrieving data
@@ -21,12 +23,17 @@ import java.util.*;
 import java.io.IOException;
 import java.sql.*;
 
-public class SQL {
+public class  JDBC {
 	public static void main(String[] args) throws SQLException, IOException{
 		Scanner sc = new Scanner(System.in);
 		Connection con =null;
 		try {
-			con = DatabaseConnectivity.initializeDatabase();
+			Class.forName("com.mysql.cj.jdbc.Driver");
+            String url="jdbc:mysql://localhost:3306/student";
+            String uname="root";
+            String pass="gmp123";
+
+            con = DriverManager.getConnection(url,uname,pass);
 		}
 		catch(Exception e) {
 			
@@ -39,6 +46,7 @@ public class SQL {
 				+ ");");
 		
 		int res = ps.executeUpdate();
+		
 		System.out.println("Table Football created successfully...");
 		
 		char ch = 'Y';
@@ -57,7 +65,7 @@ public class SQL {
 				display(con);
 				break;
 			case 3:
-				update(con,sc);
+				update(con,sc); 
 				display(con);
 				break;
 			case 4:
@@ -143,4 +151,3 @@ public class SQL {
 	}
 
 }
-
