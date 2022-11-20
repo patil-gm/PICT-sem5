@@ -29,14 +29,14 @@ int pageFaults(vector<int> pages, int n, int capacity)
 			if (s.find(pages[i]) == s.end())
 			{
 				int lru = INT_MAX, val;
-				for (auto it=s.begin(); it!=s.end(); it++)
+				for (auto it:s)
 				{
-					if (indexes[*it] < lru)
+					if (indexes[it] < lru)
 					{
-						lru = indexes[*it];
-						val = *it;
+						lru = indexes[it];
+						val = it;
 					}
-                }
+               			 }
 				s.erase(val);
 				s.insert(pages[i]);
 				page_faults++;
