@@ -6,63 +6,57 @@
 #include<unordered_map>
 using namespace std;
 
-
-bool search(int key, vector<int>& fr)
-{
-	for (int i = 0; i < fr.size(); i++)
-		if (fr[i] == key)
-			return true;
-	return false;
+int getpos(int idx,int find,int n,vector<int> &pages){
+    for(int i=idx;i<n;i++){
+        if(pages[i]==find)return i;
+    }
+    return INT_MAX;
 }
 
-int predict(vector<int> pg, vector<int>& fr, int pn, int index)
-{
-	int res = -1, farthest = index;
-	for (int i = 0; i < fr.size(); i++) {
-		int j;
-		for (j = index; j < pn; j++) {
-			if (fr[i] == pg[j]) {
-				if (j > farthest) {
-					farthest = j;
-					res = i;
-				}
-				break;
-			}
-		}
 
-		if (j == pn)
-			return i;
-	}
+int pageFaults(vector<int> &pages, int n, int capacity)
+{	int pf=0,size=0;
+    unordered_set<int> s;
 
-	return (res == -1) ? 0 : res;
-}
+    for(int i=0;i<n;i++){
+        if(size<capacity){
+            if(s.find(pages[i])==s.end()){
+                s.insert(pages[i]);
+                pf++;
+                size++;
+            }
+           
+        }
+        else{
+             if(s.find(pages[i])==s.end()){
+                int pos=-1;
+                int val=0;
+                for(auto it:s){
+                    int temp=getpos(i,it,n,pages);
+                    pos = max(pos,temp);
+                    if(pos==INT_MAX){
+                        val=it;
+                        break;
+                    }
+                }
+                if(pos!=INT_MAX){
+                    val=pages[pos];
+                }
+                s.erase(val);
+                s.insert(pages[i]);
+                pf++;
 
-void optimalPage(vector<int> pg, int pn, int fn)
-{
-	vector<int> fr;
+            }
+        }
+    }
+  
 
-	int hit = 0;
-	for (int i = 0; i < pn; i++) {
-
-		if (search(pg[i], fr)) {
-			hit++;
-			continue;
-		}
-
-		if (fr.size() < fn)
-			fr.push_back(pg[i]);
-
-		else {
-			int j = predict(pg, fr, pn, i + 1);
-			fr[j] = pg[i];
-		}
-	}
-	cout << "No. of hits = " << hit << endl;
-	cout << "No. of misses = " << pn - hit << endl;
+	return pf;
 }
 
 int main()
-{   cout<<"enter the no of pages : ";
+{
+	cout<<"enter the no of pages : ";
     int n; cin>>n;
     vector<int> pg;
     for(int i=0;i<n;i++){
@@ -70,13 +64,18 @@ int main()
         int x;cin>>x;
         pg.push_back(x);
     }
+
 	int fn;
     cout<<"enter the frame no's :";
     cin>>fn;
-	optimalPage(pg, n, fn);
+	cout<<"the no of page fault's is : "<<pageFaults(pg, n, fn)<<endl;
 	return 0;
 }
 
 // 13
 // 7 0 1 2 0 3 0 4 2 3 0 3 2 
+// 4
+
+// 20
+// 7 0 1 2 0 3 0 4 2 3 0 3 2 1 2 0 1 7 0 1
 // 4
