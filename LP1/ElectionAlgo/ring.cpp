@@ -1,108 +1,60 @@
 // #include <bits/stdc++.h>
 // patil-gm
 #include<iostream>
-
+#include<vector>
+#include<cmath>
 using namespace std;
-class Ring
-{
-    int token[100];
-    int l = 0;
 
-public:
-    void print()
-    {
-        cout << "\t ___ Token received : "<< endl;
-        for (int i = 0; i < l; i++)
-            cout << token[i] << ", ";
-        cout << endl;
+vector<int> tocken;
+
+int ring(vector<bool> proc,int n,int start){
+
+    int curr=start;
+    while(true){
+        for(int i=start;i<n;i++){
+            if(proc[i]==1){
+                tocken.push_back(i+1);
+                cout<<"process "<<curr+1<<" called process "<<i+1<<endl;
+                curr=i;
+                cout<<"\t\tRecived Tockens : {";
+                for(int i=0;i<tocken.size();i++){
+                    cout<<tocken[i]<<",";
+                }
+                cout<<"}"<<endl;
+                
+            }
+        }
+
+        if(start!=0){
+            n=start;
+            start=0;
+        }
+        else{
+            break;
+        }
+    }
+    if(tocken.size()==0){
+        cout<<"there is no process alive to be a co-ordinator\n";
+        return -1;}
+    return *max_element(tocken.begin(),tocken.end());
+}
+
+
+int main(){
+    
+    cout<<"enter the no of processes : ";
+    int n;cin>>n;
+    vector<bool> proc;
+
+    for(int i=0;i<n;i++){
+        cout<<"enter the state of process "<<(i+1)<<" (1/0) : ";
+        int x;cin>>x;
+        proc.push_back(x);
     }
 
-    Ring()
-    {
-        int winner, max = -1;
-
-        cout << "Enter the Total Number of processes = "<< endl;
-        int n;
-        cin >> n;
-        winner = n;
-        int processes[n + 1];
-        int status[n + 1];
-        cout << "Enter the status of processes (1/0) ....."<< endl;
-        for (int i = 0; i < n; i++)
-        {
-            processes[i] = i;
-            cout << "Enter the status of process " << i << " = "<< endl;
-            cin >> status[i];
-        }
-        cout << "Enter the process initiator = "<< endl;
-        int x;
-        cin >> x;
-
-        int i = x;
-        while (i < n)
-        {
-            if (status[i] == 1)
-            {
-                int next = i + 1;
-                while (next < n)
-                {
-                    if (status[next] == 1)
-                    {
-                        cout << "Election message is sent from " << i << " to " << next<< endl;
-                        token[l] = i;
-                        l++;
-                        print();
-                        winner = next;
-                        break;
-                    }
-                    else
-                    {
-                        next++;
-                    }
-                }
-            }
-            i++;
-        }
-
-        cout << "Election message is sent from " << winner << " to 0"<< endl;
-        token[l] = winner;
-        l++;
-        print();
-        i = 0;
-        while (i < x)
-        {
-            if (status[i] == 1)
-            {
-                int next = i + 1;
-                while (next < n)
-                {
-                    if (status[next] == 1)
-                    {
-                        cout << "Election message is sent from " << i << " to " << next<< endl;
-                        token[l] = i;
-                        l++;
-                        print();
-                        break;
-                    }
-                    else
-                    {
-                        next++;
-                    }
-                }
-            }
-            i++;
-        }
-
-        for (int j = 0; j < l; j++)
-        {
-            if (token[j] > max)
-                max = token[j];
-        }
-        cout << "Co-ordinator is " << max<< endl;
-    }
-};
-int main()
-{   
-    Ring r;
-    return 0;
+    cout<<"\nEnter the initiater process no : ";
+    int start;cin>>start;
+    int ans=ring(proc,n,start-1);
+    if(ans!=-1)cout<<"\nCurrent process co-ordinator is : "<<ans<<endl;
+    
 }
